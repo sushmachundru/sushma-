@@ -1,0 +1,303 @@
+﻿A)  #include <stdio.h> 
+#include <stdlib.h> 
+struct node 
+{ 
+     int data; 
+     struct node* right; 
+     struct node* left; 
+}; 
+
+
+struct node* newNode(int data) 
+{ 
+     struct node* node = (struct node*) 
+     malloc(sizeof(struct node)); 
+     node->data = data; 
+     node->left = NULL; 
+     node->right = NULL; 
+  
+     return(node); 
+} 
+
+
+void printPostorder(struct node* node) 
+{ 
+     if (node == NULL) 
+        return; 
+  
+     printPostorder(node->left); 
+   
+     printPostorder(node->right); 
+  
+     printf("%d ", node->data); 
+} 
+  
+void printInorder(struct node* node) 
+{ 
+     if (node == NULL) 
+          return; 
+  
+     printInorder(node->left); 
+  
+     printf("%d ", node->data);   
+  
+    
+     printInorder(node->right); 
+} 
+  
+void printPreorder(struct node* node) 
+{ 
+     if (node == NULL) 
+          return; 
+  
+     
+     printf("%d ", node->data);   
+  
+     
+     printPreorder(node->left);   
+  
+     
+     printPreorder(node->right); 
+}     
+
+
+int main() 
+{ 
+     struct node *root  = newNode(3); 
+     root->left             = newNode(4); 
+     root->right           = newNode(5); 
+     root->left->left     = newNode(6); 
+     root->left->right   = newNode(7);  
+  
+     printf("\nPreorder traversal of binary tree is \n"); 
+     printPreorder(root); 
+  
+     printf("\nPreorder traversal of binary tree is \n"); 
+     printInorder(root);   
+  
+     printf("\nPostorder traversal of binary tree is \n"); 
+     printPostorder(root); 
+  
+     getchar(); 
+     return 0; 
+} 
+
+
+output: 
+Preorder traversal of binary tree is
+ 3 4 6 7 5
+Preorder traversal of binary tree is
+6 4 7 3 5
+Postorder traversal of binary tree is
+6 7 4 5 3
+
+
+
+
+
+
+b) 
+/*Create a node for tree*/
+typedef struct BST {
+   int data;
+   struct BST *leftChild, *rightChild;
+} node;
+
+
+/*
+ In order traversal function.
+ */
+void inorder(node *root) {
+        
+   if (root != NULL) {
+           //visit all left childs
+      inorder(root->leftChild);
+          //visit the root
+      printf("%d ", root->data);
+          //visti all right childs
+      inorder(root->rightChild);
+   }
+}
+
+
+
+
+/*Create a new node*/
+node *newNode(int data) {
+   node *temp;
+   //Create a memory chunk of size node structure
+   temp = (node *) malloc(sizeof(node));
+   if(temp == NULL)
+    {
+        fprintf (stderr, "Memory failure \n");
+        exit(1);
+    }
+
+
+   //fill data in the node
+
+
+   temp->data = data;
+  //Since it is a new node, left and right child
+  
+   temp->leftChild = NULL;
+   temp->rightChild = NULL;
+   //Return the pointer of the node
+   return temp;
+}
+
+
+/*Insert the node into the tree*/
+node* insert(node *root, int data)
+{
+ 
+    if(root == NULL)
+    {
+                //Create first root node
+        root = newNode(data);
+    }
+    else
+    {
+                if (data < root->data){
+
+
+                        root->leftChild  = insert(root->leftChild, data);
+                }else{
+                         root->rightChild = insert(root->rightChild, data);
+                } 
+    }
+
+
+    return root;
+}
+int main(){
+
+
+        struct node *bst = NULL;
+
+
+        //Prepare a BST 
+    bst = insert(bst, 70);
+    insert(bst, 10);
+        insert(bst, 90);
+        insert(bst, 40);
+        insert(bst, 30);
+        insert(bst, 60);        
+          
+    //Do the in order traversal of BST
+        //In order traversal will print sorted
+        //data in ascending order
+    inorder(bst);
+
+
+        return 0;
+}
+
+
+Output: 20 30 45 69 70 91
+
+
+c) 
+#include <stdio.h>
+int main()
+{
+  int array[100], search, c, n;
+
+
+  printf("Enter number of elements in array\n");
+  scanf("%d", &n);
+
+
+  printf("Enter %d integer(s)\n", n);
+
+
+  for (c = 0; c < n; c++)
+    scanf("%d", &array[c]);
+
+
+  printf("Enter a number to search\n");
+  scanf("%d", &search);
+
+
+  for (c = 0; c < n; c++)
+  {
+    if (array[c] == search)    /* If required element is found */
+    {
+      printf("%d is present at location %d.\n", search, c+1);
+      break;
+    }
+  }
+  if (c == n)
+    printf("%d isn't present in the array.\n", search);
+
+
+  return 0;
+}
+
+
+output:
+Enter number of elements in array
+3
+Enter 3 integer
+3 4 5
+Enter a number to search
+6
+6 isn't present in the array
+
+
+d)
+#include <stdio.h>
+int main()
+{
+  int c, first, last, middle, n, search, array[100];
+
+
+  printf("Enter number of elements\n");
+  scanf("%d", &n);
+
+
+  printf("Enter %d integers\n", n);
+
+
+  for (c = 0; c < n; c++)
+    scanf("%d", &array[c]);
+
+
+  printf("Enter value to find\n");
+  scanf("%d", &search);
+
+
+  first = 0;
+  last = n - 1;
+  middle = (first+last)/2;
+
+
+  while (first <= last) {
+    if (array[middle] < search)
+      first = middle + 1;
+    else if (array[middle] == search) {
+      printf("%d found at location %d.\n", search, middle+1);
+      break;
+    }
+    else
+      last = middle - 1;
+
+
+    middle = (first + last)/2;
+  }
+  if (first > last)
+    printf("Not found! %d isn't present in the list.\n", search);
+
+
+  return 0;
+}
+
+
+output:
+Enter number of elements
+3
+Enter 3 integer
+4 5 6
+Enter value to find
+6
+6 found at location 2
